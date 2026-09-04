@@ -1,37 +1,30 @@
 /**
- * Configuration options for the Lunar Startup Animation.
- * Adjust timings, titles, or disable animation directly from this single file.
+ * Configuration options for the Lunar Vision 3D Startup Animation.
+ * Control duration, toggle animation, or adjust title text from this single file.
  */
 export const ANIMATION_CONFIG = {
   // Master toggle to enable or disable the intro animation completely
   enabled: true,
 
-  // Speed multiplier (1.0 = standard speed, 0.5 = double speed, 2.0 = half speed)
-  speedMultiplier: 1.0,
+  // Total duration of the cinematic sequence in seconds (default ~18s for full cinematic experience)
+  // Set to e.g. 10 for a quicker presentation or 20 for full cinematic pacing
+  INTRO_DURATION: 18.0,
 
   // Enable or allow user to skip intro using button or keyboard (ESC / Space)
   allowSkip: true,
 
-  // Duration of individual scenes in milliseconds (base values before speedMultiplier)
-  sceneDurations: {
-    scene1_earth: 3500,        // Earth & space overview
-    scene2_launch: 4000,       // Rocket launch & ascent
-    scene3_separation: 4000,   // Satellite separation & solar panel deployment
-    scene4_moonApproach: 4500, // Travel towards Moon
-    scene5_lunarOrbit: 5000,   // Lunar orbit insertion & revolving orbiter
-    scene6_reveal: 4500,       // Title reveal & final transition to dashboard
-  },
-
-  // Telemetry HUD text settings
-  telemetry: {
-    agency: 'ISRO / LUNAR RESEARCH DIVISION',
-    mission: 'CHANDRAYAAN-2 / LUNAR CORRESPONDENCE',
-  },
-
-  // Titles shown during Scene 6
+  // Titles shown during the title reveal phase
   titles: {
-    mainTitle: 'LUNAR IMAGE CORRESPONDENCE',
-    subtitle: 'Multi-Modal Lunar Image Matching',
-    systemReadyText: 'MISSION CONTROL SYSTEM ONLINE • ENTERING DASHBOARD',
-  }
+    mainTitle: 'LUNAR VISION',
+    subtitle: 'MULTI-MODAL LUNAR IMAGE CORRESPONDENCE & ALIGNMENT',
+    missionStatus: 'MISSION STATUS: ORBIT STABLE',
+    systemReadyText: 'SYSTEM SYNCHRONIZATION COMPLETE • ENTERING WORKSPACE',
+  },
+
+  // Telemetry HUD metadata
+  telemetry: {
+    agency: 'LUNAR OBSERVATION & RECONNAISSANCE DIVISION',
+    mission: 'CHANDRAYAAN // LUNAR-CORRESPONDENCE-ORBITER',
+    frequency: '2.24 GHz S-BAND DSN',
+  },
 };
