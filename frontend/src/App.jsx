@@ -13,9 +13,10 @@ function App() {
 
   return (
     <>
-      {showAnimation && (
+    {/* the below is or the start up animation currently commented snce working on backend */}
+      {/* {showAnimation && (
         <StartupAnimation onComplete={handleAnimationComplete} />
-      )}
+      )} */}
       <Dashboard />
     </>
   )
