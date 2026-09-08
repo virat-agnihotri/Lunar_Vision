@@ -2,7 +2,8 @@ from service_modules.preProcessing import preProcessing
 from service_modules.feature_detection import detect_features
 from service_modules.feature_matching import match_features
 from service_modules.ransac import apply_ransac
-
+from service_modules.homography import apply_homography
+import cv2
 
 def image_pipeline(smapleimg_bytes,sourceimg_bytes):
     print("working...")
@@ -25,6 +26,16 @@ def image_pipeline(smapleimg_bytes,sourceimg_bytes):
     print("RANSAC inliers:", len(inliers))
     print("RANSAC outliers:", len(outliers))
 
+    aligned_image=apply_homography(sampleimg,H,sourceimg)
+    cv2.imwrite("aligned_image.jpg",aligned_image)
+    overlay = cv2.addWeighted(
+        aligned_image,
+        0.5,
+        sourceimg,
+        0.5,
+        0
+    )
+    cv2.imwrite("overlay.jpg", overlay)
     return{
         "message": "SIFT + FLANN completed",
         "keypoints_image1": len(keypoints1),
