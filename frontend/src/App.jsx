@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-    {/* the below is or the start up animation currently commented snce working on backend */}
+    the below is or the start up animation currently commented snce working on backend
       {/* {showAnimation && (
         <StartupAnimation onComplete={handleAnimationComplete} />
       )} */}

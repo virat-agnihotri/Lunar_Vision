@@ -3,8 +3,9 @@ from service_modules.feature_detection import detect_features
 from service_modules.feature_matching import match_features
 from service_modules.ransac import apply_ransac
 from service_modules.homography import apply_homography
+from service_modules.subpixel_refinement import subpixel_refinement
 import cv2
-
+import numpy as np
 def image_pipeline(smapleimg_bytes,sourceimg_bytes):
     print("working...")
     # preprocessing
@@ -36,6 +37,17 @@ def image_pipeline(smapleimg_bytes,sourceimg_bytes):
         0
     )
     cv2.imwrite("overlay.jpg", overlay)
+    points1, refined_points2, status, error = subpixel_refinement(
+        sampleimg,
+        sourceimg,
+        keypoints1,
+        keypoints2,
+        inliers
+    )
+    print("RANSAC inliers:", len(inliers))
+    print("Refined points:", len(refined_points2))
+    print("Successful refinements:", np.sum(status))
+    print("Total points:", len(status))
     return{
         "message": "SIFT + FLANN completed",
         "keypoints_image1": len(keypoints1),
