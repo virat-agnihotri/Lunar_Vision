@@ -7,9 +7,6 @@ async def process_images(image1:UploadFile=File(...),image2:UploadFile=File(...)
     sampleimg=await image1.read()
     sourceimg=await image2.read()
     result=image_pipeline(sampleimg,sourceimg)
-    
-    return {
-        "message":"Images received successfully",
-        "image1":image1.filename,
-        "image2":image2.filename
-    }
+    result["image1_name"] = image1.filename
+    result["image2_name"] = image2.filename
+    return result
