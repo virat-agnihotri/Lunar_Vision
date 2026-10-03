@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import HeroVisual from './components/HeroVisual';
 import PipelineStrip from './components/PipelineStrip';
@@ -29,7 +29,7 @@ export default function App() {
       const halfH = window.innerHeight / 2;
       const normX = (e.clientX - halfW) / halfW;
       const normY = (e.clientY - halfH) / halfH;
-      // Very restrained shift: max 6 pixels
+      // Very restrained shift
       setBgOffset({ x: normX * 6, y: normY * 6 });
     };
 
@@ -37,19 +37,13 @@ export default function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Measure actual image dimensions when file is chosen
   const handleSampleSelect = (file) => {
     setSampleFile(file);
     const url = URL.createObjectURL(file);
     setSamplePreview(url);
     const img = new Image();
     img.onload = () => {
-      setSampleInfo({
-        name: file.name,
-        size: file.size,
-        width: img.naturalWidth,
-        height: img.naturalHeight,
-      });
+      setSampleInfo({ name: file.name, size: file.size, width: img.naturalWidth, height: img.naturalHeight });
     };
     img.src = url;
   };
@@ -60,12 +54,7 @@ export default function App() {
     setReferencePreview(url);
     const img = new Image();
     img.onload = () => {
-      setReferenceInfo({
-        name: file.name,
-        size: file.size,
-        width: img.naturalWidth,
-        height: img.naturalHeight,
-      });
+      setReferenceInfo({ name: file.name, size: file.size, width: img.naturalWidth, height: img.naturalHeight });
     };
     img.src = url;
   };
@@ -82,7 +71,6 @@ export default function App() {
     setReferenceInfo(null);
   };
 
-  // Run backend POST /process-images
   const handleStartAnalysis = async () => {
     if (!sampleFile || !referenceFile) {
       setErrorMessage('Please select both a sample and a reference observation frame.');
@@ -100,14 +88,11 @@ export default function App() {
       }, 150);
     } catch (err) {
       console.warn('Backend connection error:', err);
-      setErrorMessage(
-        'Could not connect to FastAPI at http://localhost:8000/process-images. Verify backend is running or run the sample pair.'
-      );
+      setErrorMessage('Could not connect to backend. Processing failed.');
       setIsProcessing(false);
     }
   };
 
-  // Run with provided demo pair
   const handleRunSamplePair = () => {
     setIsProcessing(true);
     setErrorMessage('');
@@ -165,66 +150,53 @@ export default function App() {
   const canAnalyze = Boolean(sampleFile && referenceFile && !isProcessing);
 
   return (
-    <div className="relative min-h-screen bg-scientific-atmosphere text-charcoal-900 flex flex-col selection:bg-brand-100 selection:text-brand-900">
-      {/* Background Topographic Contour & Coordinate Grid Layer (Shifts slightly with cursor) */}
+    <div className="relative min-h-screen bg-scientific-atmosphere text-white flex flex-col selection:bg-cyan-500/30 selection:text-cyan-50">
       <div 
-        className="fixed inset-0 pointer-events-none z-0 bg-topographic-contours bg-measurement-grid opacity-75 transition-transform duration-300 ease-out"
-        style={{
-          transform: `translate(${bgOffset.x}px, ${bgOffset.y}px)`,
-        }}
+        className="fixed inset-0 pointer-events-none z-0 bg-measurement-grid opacity-20 transition-transform duration-300 ease-out"
+        style={{ transform: `translate(${bgOffset.x}px, ${bgOffset.y}px)` }}
       />
 
-      {/* 1. Header Navigation */}
-      <Navbar
-        onOpenAbout={() => setIsAboutOpen(true)}
-        onScrollToAnalysis={scrollToAnalysis}
-      />
+      <Navbar onOpenAbout={() => setIsAboutOpen(true)} onScrollToAnalysis={scrollToAnalysis} />
 
-      {/* 2. Hero Section with Topographic Diagram Composition */}
-      <section className="relative z-10 border-b border-surface-border py-12 sm:py-16 overflow-hidden">
+      <section className="relative z-10 py-24 sm:py-32 overflow-hidden border-b border-white/5 bg-gradient-to-b from-transparent to-[#101A2A]/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Content Column */}
-            <div className="lg:col-span-7 space-y-5">
-              {/* Technical Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-brand-50 border border-brand-200 text-xs font-mono text-brand-800 font-semibold tracking-wide">
-                <span>[ OPENCV · FASTAPI · COMPUTER VISION ]</span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            <div className="lg:col-span-7 space-y-8">
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-cyan-900/20 border border-cyan-500/20 text-[10px] font-mono text-cyan-400 font-bold tracking-widest uppercase shadow-inner">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                System Ready
               </div>
 
-              {/* Title */}
-              <h1 className="text-4xl sm:text-6xl font-sans font-extrabold text-charcoal-900 tracking-tight leading-[1.08]">
-                LUNAR VISION
-              </h1>
+              <div className="space-y-4">
+                <h1 className="text-5xl sm:text-7xl font-sans font-extrabold text-white tracking-tight leading-[1.05]">
+                  LUNAR VISION
+                </h1>
+                <p className="font-mono text-xs sm:text-sm text-cyan-500 font-semibold tracking-[0.2em] uppercase">
+                  LUNAR IMAGE CORRESPONDENCE & REGISTRATION
+                </p>
+              </div>
 
-              {/* Subtitle */}
-              <p className="font-mono text-xs sm:text-sm text-brand-700 font-semibold tracking-wider uppercase">
-                MULTI-MODAL LUNAR IMAGE CORRESPONDENCE USING COMPUTER VISION
+              <p className="text-lg text-white/70 leading-relaxed font-light max-w-xl">
+                Feature-based registration of lunar surface imagery using SIFT, FLANN, RANSAC and homography estimation.
               </p>
 
-              {/* Concise 2-3 line narrative */}
-              <p className="text-base text-charcoal-700 leading-relaxed font-normal max-w-xl">
-                An optical image registration system establishing high-precision subpixel correspondence between lunar orbital observations across varying illumination, steep crater shadows, and viewpoint shifts.
-              </p>
-
-              {/* Action Buttons */}
-              <div className="pt-3 flex flex-wrap items-center gap-4">
+              <div className="pt-4 flex flex-wrap items-center gap-6">
                 <button
                   onClick={scrollToAnalysis}
-                  className="px-7 py-3.5 rounded font-sans font-semibold text-xs tracking-wider uppercase text-white bg-brand-700 hover:bg-brand-800 transition-all shadow-sm hover:shadow-md cursor-pointer flex items-center gap-2.5 group"
+                  className="px-8 py-4 rounded bg-cyan-600 hover:bg-cyan-500 font-sans font-bold text-xs tracking-[0.15em] uppercase text-white transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] cursor-pointer flex items-center gap-3 group border border-cyan-400/50"
                 >
                   <span>BEGIN ANALYSIS</span>
-                  <span className="group-hover:translate-x-0.5 transition-transform">↓</span>
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </button>
                 <button
                   onClick={() => setIsAboutOpen(true)}
-                  className="px-6 py-3.5 rounded font-sans font-semibold text-xs tracking-wider uppercase text-charcoal-700 bg-white hover:bg-surface-bg border border-surface-borderDark transition-colors shadow-xs cursor-pointer"
+                  className="px-8 py-4 rounded bg-[#101A2A]/80 hover:bg-[#162235] font-sans font-bold text-xs tracking-[0.15em] uppercase text-white/80 hover:text-white border border-white/10 transition-all cursor-pointer backdrop-blur shadow-sm"
                 >
-                  VIEW PIPELINE ARCHITECTURE
+                  VIEW PIPELINE
                 </button>
               </div>
             </div>
 
-            {/* Right Column: Abstract Lunar Topographic Visual Diagram */}
             <div className="lg:col-span-5 flex items-center justify-center lg:justify-end">
               <HeroVisual />
             </div>
@@ -232,41 +204,34 @@ export default function App() {
         </div>
       </section>
 
-      {/* 3. Horizontal Feature Strip (Pipeline Summary) */}
-      <div className="relative z-10">
+      <div className="relative z-10 border-b border-white/5">
         <PipelineStrip />
       </div>
 
-      {/* 4. Main Analysis Workspace */}
-      <main id="analysis-section" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-1 w-full space-y-8">
-        {/* Section Heading with Blue Indicator Accent */}
-        <div className="flex flex-wrap justify-between items-end gap-4 border-b border-surface-border pb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-1.5 h-6 bg-brand-700 rounded-full" />
+      <main id="analysis-section" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex-1 w-full space-y-12">
+        <div className="flex flex-wrap justify-between items-end gap-4 border-b border-white/10 pb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-2 h-8 bg-cyan-500 rounded-sm shadow-[0_0_12px_rgba(6,182,212,0.5)]" />
             <div>
-              <h2 className="text-2xl font-sans font-bold text-charcoal-900 tracking-tight">
-                IMAGE CORRESPONDENCE ANALYSIS
+              <h2 className="text-3xl font-sans font-bold text-white tracking-wide uppercase">
+                ANALYSIS — OBSERVATION INPUTS
               </h2>
-              <p className="text-xs text-charcoal-500 mt-0.5">
-                Upload two lunar observation frames to execute feature matching and geometric homography.
-              </p>
             </div>
           </div>
 
           {(sampleFile || referenceFile || analysisData) && (
             <button
               onClick={handleReset}
-              className="text-xs font-semibold font-mono text-charcoal-500 hover:text-red-600 transition-colors cursor-pointer"
+              className="text-xs font-semibold font-mono text-white/50 hover:text-red-400 transition-colors cursor-pointer uppercase tracking-wider"
             >
               Reset Session
             </button>
           )}
         </div>
 
-        {/* Dual Observation Upload Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <ImageUploadCard
-            title="SAMPLE OBSERVATION"
+            title="TARGET IMAGE"
             subtitle="Target observation frame requiring perspective alignment"
             accentColor="blue"
             imageSrc={samplePreview}
@@ -274,9 +239,8 @@ export default function App() {
             onFileSelect={handleSampleSelect}
             onClear={handleClearSample}
           />
-
           <ImageUploadCard
-            title="REFERENCE OBSERVATION"
+            title="REFERENCE IMAGE"
             subtitle="Reference orbital baseline image for geometric ground truth"
             accentColor="indigo"
             imageSrc={referencePreview}
@@ -286,62 +250,58 @@ export default function App() {
           />
         </div>
 
-        {/* Error Alert */}
         {errorMessage && (
-          <div className="p-4 rounded bg-red-50 border border-red-200 text-xs font-mono text-red-800 flex items-start justify-between gap-3 shadow-xs">
+          <div className="p-4 rounded-lg bg-red-950/50 border border-red-500/30 text-xs font-mono text-red-200 flex items-start justify-between gap-3 shadow-lg backdrop-blur">
             <span>{errorMessage}</span>
-            <button onClick={() => setErrorMessage('')} className="font-bold text-red-600">✕</button>
+            <button onClick={() => setErrorMessage('')} className="font-bold text-red-400 hover:text-red-300">✕</button>
           </div>
         )}
 
-        {/* Process Action Bar */}
-        <div className="scientific-card p-6 bg-white border border-surface-border flex flex-wrap items-center justify-between gap-4 shadow-sm">
+        <div className="scientific-card p-8 bg-[#101A2A]/80 flex flex-wrap items-center justify-between gap-6 shadow-xl border-t border-white/10">
           <div>
-            <p className="text-sm font-bold text-charcoal-900">
-              {canAnalyze
-                ? 'Ready to execute correspondence pipeline'
-                : 'Upload both observation frames to begin analysis'}
+            <p className="text-lg font-bold text-white uppercase tracking-wider">
+              {canAnalyze ? 'READY FOR PROCESSING' : 'AWAITING DATA INPUT'}
             </p>
-            <p className="text-xs text-charcoal-500 mt-0.5">
-              The frames will pass through SIFT feature detection, FLANN matching, RANSAC, and subpixel LK refinement.
+            <p className="text-xs text-white/50 mt-1 font-mono uppercase tracking-widest">
+              {canAnalyze ? 'Target and Reference images loaded' : 'Upload both images to enable the pipeline'}
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleRunSamplePair}
+              className="px-6 py-4 rounded font-mono text-xs font-bold text-white/60 bg-white/5 hover:bg-white/10 border border-white/10 transition-colors cursor-pointer uppercase tracking-widest"
+            >
+              Run Demo Data
+            </button>
             <button
               disabled={!canAnalyze}
               onClick={handleStartAnalysis}
-              className={`px-8 py-3.5 rounded font-sans font-bold text-xs tracking-wider uppercase transition-all cursor-pointer shadow-sm ${
+              className={`px-10 py-4 rounded font-sans font-bold text-sm tracking-[0.2em] uppercase transition-all cursor-pointer shadow-lg flex items-center justify-center min-w-[280px] ${
                 canAnalyze
-                  ? 'bg-brand-700 hover:bg-brand-800 text-white'
-                  : 'bg-surface-muted border border-surface-border text-charcoal-400 cursor-not-allowed opacity-60'
+                  ? 'bg-cyan-600 hover:bg-cyan-500 text-white border border-cyan-400/50 shadow-[0_0_20px_rgba(6,182,212,0.3)]'
+                  : 'bg-white/5 border border-white/10 text-white/30 cursor-not-allowed'
               }`}
             >
-              {isProcessing ? 'CALCULATING PIPELINE...' : 'BEGIN CORRESPONDENCE ANALYSIS →'}
-            </button>
-
-            <button
-              onClick={handleRunSamplePair}
-              className="px-5 py-3.5 rounded font-mono text-xs font-semibold text-charcoal-700 bg-surface-muted hover:bg-surface-border border border-surface-border transition-colors cursor-pointer"
-            >
-              ⚡ Run Sample Pair
+              {isProcessing ? (
+                <span className="flex items-center gap-3">
+                  <span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></span>
+                  PROCESSING...
+                </span>
+              ) : 'PROCESS IMAGES'}
             </button>
           </div>
         </div>
 
-        {/* 5. Comprehensive Pipeline Results View */}
         <PipelineResults data={analysisData} isProcessing={isProcessing} />
       </main>
 
-      {/* 6. Clean Scientific Footer */}
-      <footer className="relative z-10 bg-white border-t border-surface-border py-6 mt-16 shadow-[0_-1px_2px_rgba(0,0,0,0.02)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-charcoal-500">
-          <div>LUNAR VISION • MULTI-MODAL LUNAR IMAGE CORRESPONDENCE</div>
-          <div>COMPUTER VISION • SIFT • FLANN • RANSAC • HOMOGRAPHY</div>
+      <footer className="relative z-10 bg-[#0B1220] border-t border-white/10 py-8 mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4 text-[10px] font-mono text-white/40 tracking-widest uppercase">
+          <div>LUNAR VISION • SCIENTIFIC VISUALIZATION</div>
+          <div>SIFT • FLANN • RANSAC • HOMOGRAPHY</div>
         </div>
       </footer>
-
-      {/* About Modal */}
       <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </div>
   );

@@ -240,9 +240,9 @@ export const LunarGlobe3D = () => {
     <div className="relative w-full h-full flex items-center justify-center">
       {/* Loading Spinner */}
       {isLoading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/70 backdrop-blur-xs rounded-full z-10">
-          <div className="w-8 h-8 rounded-full border-2 border-brand-200 border-t-brand-600 animate-spin mb-2" />
-          <span className="font-mono text-[10px] text-brand-800 font-semibold">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#050810]/70 backdrop-blur-xs rounded-full z-10">
+          <div className="w-8 h-8 rounded-full border-2 border-cyan-500/30 border-t-cyan-400 animate-spin mb-2" />
+          <span className="font-mono text-[10px] text-cyan-400 font-semibold uppercase tracking-widest">
             LOADING NASA LRO MODEL...
           </span>
         </div>
@@ -258,26 +258,28 @@ export const LunarGlobe3D = () => {
       />
 
       {/* NASA Telemetry & Variant Switcher Pill */}
-      <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-white/95 backdrop-blur-md border border-brand-200 px-2.5 py-1 rounded-full shadow-md pointer-events-auto z-20">
-        <span className="w-1.5 h-1.5 rounded-full bg-cyan-600 animate-pulse" />
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-[#101A2A]/90 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-full shadow-lg pointer-events-auto z-20">
+        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
         
         {/* Toggle between NASA Grid and NASA Clean models */}
         <button
           onClick={() => setModelType(modelType === 'grid' ? 'clean' : 'grid')}
-          className="font-mono text-[9.5px] text-charcoal-800 hover:text-brand-700 font-bold tracking-wide flex items-center gap-1 transition-colors cursor-pointer"
+          className="font-mono text-[9px] text-white/80 hover:text-cyan-400 font-bold tracking-widest flex items-center gap-1.5 transition-colors cursor-pointer uppercase"
           title="Toggle between NASA LRO Coordinate Grid and Clean Albedo Surface"
         >
-          <Globe2 className="w-2.5 h-2.5 text-brand-600" />
-          <span>{modelType === 'grid' ? 'NASA LRO (GRID)' : 'NASA LRO (CLEAN)'}</span>
+          <Globe2 className="w-3 h-3 text-cyan-500" />
+          <span>{modelType === 'grid' ? 'LRO (GRID)' : 'LRO (CLEAN)'}</span>
         </button>
+
+        <div className="w-px h-3 bg-white/20 mx-1"></div>
 
         {/* Reset button */}
         <button
           onClick={handleReset}
-          className="ml-0.5 p-0.5 text-charcoal-400 hover:text-brand-600 rounded transition-colors cursor-pointer"
+          className="p-1 text-white/40 hover:text-cyan-400 rounded transition-colors cursor-pointer"
           title="Reset Orientation"
         >
-          <RotateCw className="w-2.5 h-2.5" />
+          <RotateCw className="w-3 h-3" />
         </button>
 
         {/* Link to NASA SVS 14959 source */}
@@ -285,16 +287,16 @@ export const LunarGlobe3D = () => {
           href="https://svs.gsfc.nasa.gov/14959/"
           target="_blank"
           rel="noreferrer"
-          className="p-0.5 text-charcoal-400 hover:text-brand-600 transition-colors"
+          className="p-1 text-white/40 hover:text-cyan-400 transition-colors"
           title="View NASA Scientific Visualization Studio Entry 14959"
         >
-          <ExternalLink className="w-2.5 h-2.5" />
+          <ExternalLink className="w-3 h-3" />
         </a>
       </div>
 
       {/* Floating Drag Hint Pill */}
-      <div className="absolute top-3 right-4 flex items-center gap-1 font-mono text-[9px] text-charcoal-500 bg-white/90 px-2 py-0.5 rounded-full border border-slate-200 shadow-xs pointer-events-none z-20">
-        <Move className="w-2.5 h-2.5 text-brand-600" />
+      <div className="absolute top-6 right-6 flex items-center gap-1.5 font-mono text-[8px] text-white/50 bg-[#101A2A]/80 backdrop-blur px-2.5 py-1 rounded-full border border-white/10 shadow-sm pointer-events-none z-20 uppercase tracking-widest">
+        <Move className="w-2.5 h-2.5 text-cyan-500" />
         <span>DRAG TO ROTATE</span>
       </div>
     </div>

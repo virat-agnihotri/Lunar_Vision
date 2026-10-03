@@ -8,54 +8,46 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
+          50: '#162235',
+          100: '#101A2A',
+          200: '#0B1220',
+          300: '#1e3a8a',
+          400: '#2563eb',
           500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8', // Deep blue primary
-          800: '#1e40af', // Deep indigo
-          900: '#1e3a8a',
-        },
-        cyan: {
-          50: '#ecfeff',
-          100: '#cffafe',
-          500: '#06b6d4',
-          600: '#0891b2',
-          700: '#0e7490',
-        },
-        lunarAmber: {
-          50: '#fffbeb',
-          100: '#fef3c7',
-          500: '#f59e0b',
-          600: '#d97706',
-          700: '#b45309',
+          600: '#06b6d4',
+          700: '#0891b2',
+          800: '#0e7490',
+          900: '#0B1220',
         },
         surface: {
-          bg: '#F8FAFC',       // Clean off-white
-          tinted: '#F1F5F9',   // Pale cool blue-grey
-          subtleBlue: '#F0F4F8',
-          card: '#FFFFFF',     // Pure white card
-          border: '#E2E8F0',   // Subtle neutral border
-          borderDark: '#CBD5E1',
+          bg: '#0B1220',
+          card: '#101A2A',
+          cardLight: '#162235',
+          border: 'rgba(255, 255, 255, 0.1)',
+          borderDark: 'rgba(255, 255, 255, 0.2)',
+          muted: 'rgba(255, 255, 255, 0.05)',
         },
         charcoal: {
-          900: '#0F172A', // Main dark text
-          700: '#334155', // Secondary text
-          500: '#64748B', // Muted text
-          400: '#94A3B8', // Subdued text
+          900: '#F8FAFC', // Actually white for dark theme text
+          700: '#CBD5E1', // Secondary text
+          500: '#94A3B8', // Muted text
+          400: '#64748B', // Subdued text
+        },
+        accent: {
+          blue: '#3b82f6',
+          cyan: '#06b6d4',
+          success: '#10b981',
+          error: '#ef4444'
         }
       },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        mono: ['"JetBrains Mono"', '"Space Mono"', 'monospace'],
       },
       letterSpacing: {
         widest: '.25em',
         ultra: '.35em',
       }
-
-
     },
   },
   plugins: [],

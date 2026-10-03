@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 
 export const PipelineStrip = () => {
   const steps = [
@@ -7,32 +7,34 @@ export const PipelineStrip = () => {
     { num: '03', title: 'FLANN / KNN', detail: 'Lowe Ratio 0.70' },
     { num: '04', title: 'RANSAC', detail: 'Outlier Rejection' },
     { num: '05', title: 'HOMOGRAPHY', detail: '8-DOF Warp' },
-    { num: '06', title: 'LK REFINEMENT', detail: 'Subpixel Optical Flow' },
+    { num: '06', title: 'LK REFINEMENT', detail: 'Subpixel Flow' },
   ];
 
   return (
-    <div className="w-full bg-white border-y border-surface-border py-4 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+    <div className="w-full bg-[#0B1220]/80 backdrop-blur border-y border-white/5 py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center justify-between gap-y-3 gap-x-2">
+        <div className="flex flex-wrap items-center justify-between gap-y-4 gap-x-2">
           {steps.map((step, idx) => (
             <React.Fragment key={step.num}>
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-[10px] font-bold text-brand-700 bg-brand-50 border border-brand-200 px-1.5 py-0.5 rounded">
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-[9px] font-bold text-cyan-400 bg-cyan-900/30 border border-cyan-500/30 px-1.5 py-1 rounded shadow-inner">
                   {step.num}
                 </span>
                 <div>
-                  <span className="font-sans font-semibold text-xs text-charcoal-900 tracking-wide block">
+                  <span className="font-sans font-bold text-[11px] text-white tracking-widest block uppercase">
                     {step.title}
                   </span>
-                  <span className="font-mono text-[10px] text-charcoal-500 block">
+                  <span className="font-mono text-[9px] text-white/40 tracking-wider block uppercase">
                     {step.detail}
                   </span>
                 </div>
               </div>
               {idx < steps.length - 1 && (
-                <span className="hidden lg:inline-block text-brand-300 font-bold select-none text-sm">
-                  →
-                </span>
+                <div className="hidden lg:flex items-center gap-1">
+                  <span className="w-1 h-1 rounded-full bg-cyan-500/20"></span>
+                  <span className="w-1 h-1 rounded-full bg-cyan-500/50"></span>
+                  <span className="w-1 h-1 rounded-full bg-cyan-500"></span>
+                </div>
               )}
             </React.Fragment>
           ))}
